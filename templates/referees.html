@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Referees List</title>
+</head>
+<body>
+    <h1>Referees List</h1>
+    <ul>
+        {% for referee in referees_list %}
+            <li>{{ referee.refree.username }}</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

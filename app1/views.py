@@ -52,13 +52,17 @@ def LogoutPage(request):
     logout(request)
     return redirect('login')
 
+@login_required(login_url='login')  # Ensure the user is logged in
 def get_referee_list(request):
-        print("testing.....", request.user.id)
-        if request.user.id:
-            referral = Referral_system.objects.filter(referrer_id=request.user.id).first()
-            print("testing.....ksdbcakjkanckn", referral.referral_code)
+    print("testing.....", request.user.id)
+    if request.user.is_authenticated:
+        referral = Referral_system.objects.filter(referrer_id=request.user.id).first()
+        if referral:
             referral_code = referral.referral_code
-            referees = referral = Referee_system.objects.filter(referral_code=referral_code).all()
-            print("refrees list",referees)
-            return {"referees_list": referees}
-
+            referees = Referee_system.objects.filter(referral_code=referral_code).all()
+            print("referees list", referees)
+            return render(request, 'referees.html', {"referees_list": referees})
+        else:
+            return render(request, 'referees.html', {"referees_list": []})
+    else:
+        return render(request, 'referees.html', {"referees_list": []})
