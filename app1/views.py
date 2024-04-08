@@ -4,9 +4,16 @@ from app1.models import Referral_system, Referee_system
 from django.contrib.auth import authenticate,login,logout
 from django.contrib.auth.decorators import login_required
 # Create your views here.
+
+
 @login_required(login_url='login')
 def HomePage(request):
-    return render (request,'home.html')
+    # Check if the user has referrals
+    has_referrals = Referral_system.objects.filter(referrer_id=request.user.id).exists()
+    if has_referrals:
+        return redirect('refeers')  # Redirect to the referrals page
+    else:
+        return render(request, 'home.html', {'username': request.user.username})
 
 def SignupPage(request):
     if request.method == 'POST':

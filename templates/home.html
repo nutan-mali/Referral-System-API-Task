@@ -11,7 +11,14 @@
     <title>Home Page</title>
   </head>
   <body>
-    <h1>Home Page</h1>
+    
+    <h3>Welcome, {{ username }}</h3>
+    {% if has_referrals %}
+        <p>You have referred someone!</p>
+        <a href="{% url 'refeers' %}">View Referrals</a>
+    {% else %}
+        <p>You have not referred anyone yet.</p>
+    {% endif %}
     <a href="{% url 'logout' %}" class="btn btn-primary">Logout</a>
 
     <!-- Optional JavaScript -->
