@@ -6,7 +6,7 @@ Clone the repository:
 
 Copy code
 
-git clone https://github.com/your-username/django-registration-system.git
+git clone https://github.com/nutan-mali/django-registration-system.git
 
 cd django-registration-system
 
