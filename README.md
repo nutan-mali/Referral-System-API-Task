@@ -41,14 +41,24 @@ Run the development server:
 
 bash
 Copy code
+
 python manage.py runserver
+
 Access the application at http://localhost:8000/.
-URLs
+
+# URLs
 /: Home and signup form
+
 /login/: Login page
+
 /home/: User's dashboard
+
 /logout/: Logout
+
 /referees/: View referees
-Dependencies
+
+# Dependencies
+
 Django 3.x
+
 Python 3.x
