@@ -1,5 +1,6 @@
 from django.shortcuts import render,HttpResponse,redirect
 from django.contrib.auth.models import User
+from app1.models import Referral_system
 from django.contrib.auth import authenticate,login,logout
 from django.contrib.auth.decorators import login_required
 # Create your views here.
@@ -8,24 +9,30 @@ def HomePage(request):
     return render (request,'home.html')
 
 def SignupPage(request):
-    if request.method=='POST':
-        uname=request.POST.get('username')
-        email=request.POST.get('email')
-        pass1=request.POST.get('password1')
-        pass2=request.POST.get('password2')
+    if request.method == 'POST':
+        uname = request.POST.get('username')
+        email = request.POST.get('email')
+        pass1 = request.POST.get('password1')
+        pass2 = request.POST.get('password2')
+        referral_code = request.POST.get('referral_code')  # Assuming referral_code is submitted in the signup form
 
-        if pass1!=pass2:
-            return HttpResponse("Your password and confrom password are not Same!!")
+        if pass1 != pass2:
+            return HttpResponse("Your password and confirm password are not the same!!")
         else:
-
-            my_user=User.objects.create_user(uname,email,pass1)
+            # Create the user
+            my_user = User.objects.create_user(uname, email, pass1)
             my_user.save()
+
+            # Check if there's a referral with the provided referral_code
+            referral = Referral_system.objects.filter(referral_code=referral_code).first()
+            if referral:
+                # Update the referral system with the new refree (signup user)
+                referral.refree = my_user
+                referral.save()
+
             return redirect('login')
-        
 
-
-
-    return render (request,'signup.html')
+    return render(request, 'signup.html')
 
 def LoginPage(request):
     if request.method=='POST':
