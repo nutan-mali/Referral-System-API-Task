@@ -1,6 +1,6 @@
 from django.shortcuts import render,HttpResponse,redirect
 from django.contrib.auth.models import User
-from app1.models import Referral_system
+from app1.models import Referral_system, Referee_system
 from django.contrib.auth import authenticate,login,logout
 from django.contrib.auth.decorators import login_required
 # Create your views here.
@@ -24,11 +24,12 @@ def SignupPage(request):
             my_user.save()
 
             # Check if there's a referral with the provided referral_code
-            referral = Referral_system.objects.filter(referral_code=referral_code).first()
-            if referral:
+            if referral_code:
                 # Update the referral system with the new refree (signup user)
-                referral.refree = my_user
-                referral.save()
+                Referee_system.objects.create(
+                refree=my_user,
+                referral_code=referral_code
+            )
 
             return redirect('login')
 
@@ -50,3 +51,14 @@ def LoginPage(request):
 def LogoutPage(request):
     logout(request)
     return redirect('login')
+
+def get_referee_list(request):
+        print("testing.....", request.user.id)
+        if request.user.id:
+            referral = Referral_system.objects.filter(referrer_id=request.user.id).first()
+            print("testing.....ksdbcakjkanckn", referral.referral_code)
+            referral_code = referral.referral_code
+            referees = referral = Referee_system.objects.filter(referral_code=referral_code).all()
+            print("refrees list",referees)
+            return {"referees_list": referees}
+
